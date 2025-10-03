@@ -1,0 +1,6 @@
+onlyBuiltDependencies:
+  - core-js
+  - deasync
+  - fsevents
+  - maplibre-gl
+  - parcel-bundler

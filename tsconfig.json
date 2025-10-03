@@ -6,11 +6,9 @@
     "esModuleInterop": true,
     "sourceMap": true,
     "allowJs": true,
-    "lib": [
-      "es6",
-      "dom"
-    ],
+    "lib": ["ES2020", "dom"],
     "rootDir": "src",
+    "noUncheckedIndexedAccess": true,
     "moduleResolution": "node"
   }
 }

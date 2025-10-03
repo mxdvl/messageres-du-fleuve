@@ -1,8 +1,7 @@
 import "./styles.css";
-import maplibregl from "maplibre-gl";
-import "maplibre-gl/dist/maplibre-gl.css";
+import { Map } from "maplibre-gl";
 
-const map = new maplibregl.Map({
+const map = new Map({
   container: "app",
   style: "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
   center: [-78, 44.5],
@@ -62,5 +61,24 @@ const code = document.querySelector("main code");
 if (!code) throw Error("Missing code element");
 
 document.addEventListener("scroll", function () {
-  code.innerHTML = String(this.body.scrollTop);
+  const { scrollTop, scrollHeight } = this.body;
+  const camera = [
+    { bearing: 0, lat: 78, lng: 45.5 }
+    { bearing: 20, lat: 78, lng: 45.5 }
+    { bearing: -5, lat: 78, lng: 45.5 }
+    { bearing: 0, lat: 78, lng: 45.5 }
+    { bearing: 0, lat: 78, lng: 45.5 }
+    { bearing: 0, lat: 78, lng: 45.5 }
+    { bearing: 0, lat: 78, lng: 45.5 }
+    { bearing: 0, lat: 78, lng: 45.5 }
+    { bearing: 0, lat: 78, lng: 45.5 }
+    { bearing: 0, lat: 78, lng: 45.5 }
+    ][
+    Math.round((scrollTop / scrollHeight) * 10)
+  ];
+  if (camera) {
+    map.setCenter([camera.lat, camera.lng]);
+    map.setBearing(camera.bearing);
+  }
+  code.innerHTML = `${scrollTop}/${scrollHeight}`;
 });
