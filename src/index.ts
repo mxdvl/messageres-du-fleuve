@@ -47,14 +47,20 @@ map.on("load", async function () {
         ["exponential", 2],
         ["zoom"],
         1,
+        // @ts-expect-error -- it works
         ["/", 2, ["get", "stroke-width"]],
         17,
+        // @ts-expect-error -- it works
         ["*", 35, ["get", "stroke-width"]],
       ],
     },
   });
 });
 
-document.body.addEventListener("scroll", function () {
-  console.log(this, this.scrollTop);
+const code = document.querySelector("main code");
+
+if (!code) throw Error("Missing code element");
+
+document.addEventListener("scroll", function () {
+  code.innerHTML = String(this.body.scrollTop);
 });
