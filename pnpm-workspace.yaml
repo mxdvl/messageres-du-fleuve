@@ -1,6 +1,10 @@
 onlyBuiltDependencies:
+  - '@parcel/watcher'
+  - '@swc/core'
   - core-js
   - deasync
   - fsevents
+  - lmdb
   - maplibre-gl
+  - msgpackr-extract
   - parcel-bundler

@@ -6,7 +6,7 @@
     "esModuleInterop": true,
     "sourceMap": true,
     "allowJs": true,
-    "lib": ["ES2020", "dom"],
+    "lib": ["ESNext", "dom"],
     "rootDir": "src",
     "noUncheckedIndexedAccess": true,
     "moduleResolution": "node"

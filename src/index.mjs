@@ -1,4 +1,4 @@
-import "./styles.css";
+// @ts-check
 import { Map } from "maplibre-gl";
 
 const map = new Map({
@@ -10,6 +10,16 @@ const map = new Map({
   //hash: true,
 });
 
+const places = [
+  { bearing: 0, center: { lng: -75.71, lat: 45.43 } }, // Ottawa
+  { bearing: -12, center: { lng: -73.62, lat: 45.63 } }, // Montreal
+  { bearing: -12, center: { lng: -71.13, lat: 46.82 } }, // Québec
+  { bearing: -6, center: { lng: -68.61, lat: 48.49 } }, // Rimouski
+  { bearing: 6, center: { lng: -64.57, lat: 48.81 } }, // Gaspé
+  { bearing: 18, center: { lng: -61.69, lat: 47.38 } }, // Les Îles-de-la-Madeleine
+  { bearing: 24, center: { lng: -63.59, lat: 44.65 } }, // Halifax
+];
+
 const geoJson = {
   type: "FeatureCollection",
   features: [
@@ -20,10 +30,10 @@ const geoJson = {
       },
       geometry: {
         type: "LineString",
-        coordinates: [
-          [-78, 43.5],
-          [-74, 45.5],
-        ],
+        coordinates: places.map((place) => [
+          place.center.lng,
+          place.center.lat,
+        ]),
       },
     },
   ],
@@ -60,25 +70,18 @@ const code = document.querySelector("main code");
 
 if (!code) throw Error("Missing code element");
 
+let lastUpdate = Date.now();
+
 document.addEventListener("scroll", function () {
   const { scrollTop, scrollHeight } = this.body;
-  const camera = [
-    { bearing: 0, lat: 78, lng: 45.5 }
-    { bearing: 20, lat: 78, lng: 45.5 }
-    { bearing: -5, lat: 78, lng: 45.5 }
-    { bearing: 0, lat: 78, lng: 45.5 }
-    { bearing: 0, lat: 78, lng: 45.5 }
-    { bearing: 0, lat: 78, lng: 45.5 }
-    { bearing: 0, lat: 78, lng: 45.5 }
-    { bearing: 0, lat: 78, lng: 45.5 }
-    { bearing: 0, lat: 78, lng: 45.5 }
-    { bearing: 0, lat: 78, lng: 45.5 }
-    ][
-    Math.round((scrollTop / scrollHeight) * 10)
-  ];
-  if (camera) {
-    map.setCenter([camera.lat, camera.lng]);
-    map.setBearing(camera.bearing);
-  }
-  code.innerHTML = `${scrollTop}/${scrollHeight}`;
+
+  code.innerHTML = `${scrollTop}/${scrollHeight} (${lastUpdate})`;
+
+  if (Date.now() - lastUpdate < 120) return;
+  const options =
+    places[Math.floor((places.length * scrollTop) / scrollHeight)];
+
+  if (!options) return;
+  map.easeTo(options);
+  lastUpdate = Date.now();
 });
