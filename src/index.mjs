@@ -1,4 +1,5 @@
 // @ts-check
+import "maplibre-gl/dist/maplibre-gl.css";
 import { Map } from "maplibre-gl";
 
 const map = new Map({
