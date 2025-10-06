@@ -161,11 +161,12 @@ let lastUpdate = Date.now();
 document.addEventListener("scroll", function () {
   const { scrollTop, scrollHeight } = this.body;
 
-  code.innerHTML = `${scrollTop}/${scrollHeight} (${lastUpdate})`;
+  const percentage = scrollTop / (scrollHeight - globalThis.innerHeight);
+
+  code.innerHTML = `${(percentage * 100).toFixed(1)}% (${lastUpdate})`;
 
   if (Date.now() - lastUpdate < 120) return;
-  const options =
-    places[Math.floor((places.length * scrollTop) / scrollHeight)];
+  const options = places[Math.floor(places.length * percentage)];
 
   if (!options) return;
   map.easeTo(options);
