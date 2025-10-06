@@ -156,26 +156,19 @@ map.addLayer({
   },
 });
 
-const code = document.querySelector("main code");
-
+const code = document.querySelector("main")?.querySelector("code");
 if (!code) throw Error("Missing code element");
 
-/** @type {{ timestamp: number, place: typeof places[number] | undefined}} */
-const last = { timestamp: Date.now(), place: undefined };
+/** @type {typeof places[number] | undefined} */
+let place = undefined;
 
 document.addEventListener("scroll", function () {
   const { scrollTop, scrollHeight } = this.body;
-
   const percentage = scrollTop / (scrollHeight - globalThis.innerHeight);
-
-  code.innerHTML = `${(percentage * 100).toFixed(1)}% <br/>
-    (${last.place?.name ?? "…"})`;
-
-  if (Date.now() - last.timestamp < 120) return;
-  const place = places[Math.floor(places.length * percentage)];
-
-  if (last.place === place || place === undefined) return;
+  this.body.setAttribute("data-scroll", `${Math.floor(percentage * 100)}%`);
+  const next = places[Math.floor(places.length * percentage)];
+  if (!next || next === place) return;
+  place = next;
+  code.innerHTML = place.name;
   map.easeTo(place);
-  last.timestamp = Date.now();
-  last.place = place;
 });
