@@ -1,6 +1,7 @@
 // @ts-check
-import "maplibre-gl/dist/maplibre-gl.css";
 import { Map } from "maplibre-gl";
+import "maplibre-gl/dist/maplibre-gl.css";
+import "./styles.css";
 
 const map = new Map({
   container: "app",
@@ -8,7 +9,6 @@ const map = new Map({
   center: [-78, 44.5],
   zoom: 7,
   interactive: false,
-  //hash: true,
 });
 
 const places = [
@@ -21,6 +21,7 @@ const places = [
   { bearing: 24, center: { lng: -63.59, lat: 44.65 } }, // Halifax
 ];
 
+/** @type {GeoJSON.FeatureCollection} */
 const geoJson = {
   type: "FeatureCollection",
   features: [
@@ -40,7 +41,7 @@ const geoJson = {
   ],
 };
 
-map.on("load", async function () {
+map.on("load", () => {
   map.addSource("line", {
     type: "geojson",
     data: geoJson,
@@ -51,16 +52,14 @@ map.on("load", async function () {
     type: "line",
     source: "line",
     paint: {
-      "line-color": "red",
+      "line-color": "rebeccapurple",
       "line-width": [
         "interpolate",
         ["exponential", 2],
         ["zoom"],
         1,
-        // @ts-expect-error -- it works
         ["/", 2, ["get", "stroke-width"]],
         17,
-        // @ts-expect-error -- it works
         ["*", 35, ["get", "stroke-width"]],
       ],
     },

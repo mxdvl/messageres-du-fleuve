@@ -1,0 +1,22 @@
+{
+  "nodeModulesDir": "auto",
+  "tasks": {
+    "start": "deno bundle --platform browser --outdir dist --watch index.html & deno -ENR jsr:@std/http/file-server dist",
+    "build": "deno bundle --platform browser --outdir dist index.html"
+  },
+  "compilerOptions": {
+    "strict": true,
+    "module": "commonjs",
+    "jsx": "preserve",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "allowJs": true,
+    "lib": ["ESNext", "dom"],
+    "rootDir": "src",
+    "noUncheckedIndexedAccess": true,
+    "moduleResolution": "node"
+  },
+  "imports": {
+    "maplibre-gl": "npm:maplibre-gl@5.8.0"
+  }
+}
